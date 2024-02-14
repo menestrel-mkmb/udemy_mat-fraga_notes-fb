@@ -5,13 +5,23 @@ import { Link } from "react-router-dom";
 export default function Home(){
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [login, setLogin] = useState(false);
+
+    const handleLogin = (e) => {
+        e.preventDefault();
+
+        //faking have cred
+        setLogin(email !== '' && password !== '')
+    }
 
     return(
     <main className={`${styles.main__sect} ${styles.main}`}>
         <h1 className={styles.main__title}>Lista de tarefas</h1>
         <span className={styles.main__desc}>Gerencia sua agenda de forma fácil.</span>
 
-        <form className={styles.login__form}>
+        { !login &&
+        (<article>
+            <form className={styles.login__form} onSubmit={handleLogin}>
             <section className={`${styles.inpt__sect} ${styles.email__sect}`}>
                 <label className={`${styles.inp__lbl} ${styles.email__lbl}`}>
                     e-mail:
@@ -48,6 +58,10 @@ export default function Home(){
             <span className={`${styles.register__span}`}>Não tem uma conta ainda? </span>
             <Link className={`${styles.register__link}`} to="/register">Registrar</Link>
         </section>
+        </article>)}
+        { login && (<article>
+            <h3>You entered as {email}</h3>
+        </article>)}
     </main>
     )
 }
