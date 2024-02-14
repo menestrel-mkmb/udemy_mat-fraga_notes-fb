@@ -21,6 +21,7 @@ export default function Home(){
 
         { !login &&
         (<article>
+            <h2 className={`${styles.main__subtitle}`}>Entrar</h2>
             <form className={styles.login__form} onSubmit={handleLogin}>
             <section className={`${styles.inpt__sect} ${styles.email__sect}`}>
                 <label className={`${styles.inp__lbl} ${styles.email__lbl}`}>
@@ -56,7 +57,7 @@ export default function Home(){
         </form>
         <section className={`${styles.register__sect}`}>
             <span className={`${styles.register__span}`}>Não tem uma conta ainda? </span>
-            <Link className={`${styles.register__link}`} to="/register">Registrar</Link>
+            <Link className={`${styles.register__link} ${styles.elegant__link}`} to="/register">Registrar</Link>
         </section>
         </article>)}
         { login && (<article>
