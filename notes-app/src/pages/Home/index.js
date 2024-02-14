@@ -1,5 +1,6 @@
 import { useState } from "react";
 import styles from "./index.module.css";
+import { Link } from "react-router-dom";
 
 export default function Home(){
     const [email, setEmail] = useState('');
@@ -43,6 +44,10 @@ export default function Home(){
                 Entrar
             </button>
         </form>
+        <section className={`${styles.register__sect}`}>
+            <span className={`${styles.register__span}`}>Não tem uma conta ainda? </span>
+            <Link className={`${styles.register__link}`} to="/register">Registrar</Link>
+        </section>
     </main>
     )
 }
