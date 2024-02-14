@@ -37,6 +37,7 @@ export default function Home(){
                 />
             </section>
             <button
+                className={`${styles.login__btn} ${styles.btn}`}
                 type="submit"
             >
                 Entrar
