@@ -1,0 +1,44 @@
+.main__sect {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: top;
+
+    height: 100vh;
+}
+
+.main__title {
+    font-size: 4rem;
+
+    margin-bottom: .5rem;
+}
+
+.main__desc {
+    margin-bottom: 2rem;
+}
+
+.login__form {
+    display: flex;
+    flex-direction: column;
+
+    width: 90%;
+    max-width: 600px;
+}
+
+.inp__sect {
+    border: 0;
+    margin-bottom: 1rem;
+    height: 3rem;
+}
+
+.inp__lbl {
+    max-width: 400px;
+    min-width: fit-content;
+}
+
+.inp {
+    width: 100%;
+
+    margin: .25rem;
+    padding: .5rem;
+}
