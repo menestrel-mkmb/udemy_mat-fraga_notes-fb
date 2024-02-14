@@ -71,19 +71,19 @@
 }
 
 .register__span,
-.register__link {
+.elegant__link {
     font-size: .8rem;
 }
 
-.register__link {
+.elegant__link {
     font-weight: 700;
     text-decoration: none;
 }
 
-.register__link:visited {
+.elegant__link:visited {
     color: #dedede;
 }
 
-.register__link:hover {
+.elegant__link:hover {
     text-decoration: underline;
 }

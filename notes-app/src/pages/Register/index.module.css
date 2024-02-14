@@ -1,0 +1,95 @@
+.main__sect {
+    color: #dedede;
+    background-color: #131313;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: top;
+
+    height: 100vh;
+}
+
+.main__title {
+    font-size: 4rem;
+
+    margin-bottom: .5rem;
+}
+
+.main__subtitle {
+    font-size: 2rem;
+
+    margin-bottom: .5rem;
+}
+
+.main__desc {
+    margin-bottom: 2rem;
+}
+
+.register__form {
+    display: flex;
+    flex-direction: column;
+
+    width: 90%;
+    max-width: 600px;
+}
+
+.inp__sect {
+    height: 3rem;
+}
+
+.inp__lbl {
+    max-width: 400px;
+    min-width: fit-content;
+}
+
+.inp {
+    border: 0;
+    border-radius: .2rem;
+
+    width: calc(100% - .5rem);
+
+    margin: .25rem;
+    margin-bottom: 1rem;
+    padding: .5rem;
+}
+
+.btn {
+    background-color: #3366ff;
+    color: #dedede;
+    border: 2px #3366ff solid;
+    border-radius: .2rem;
+
+    width: calc(100% - .5rem);
+    
+    margin: .25rem;
+    padding: .5rem;
+}
+
+.btn:hover {
+    background-color: #131313;
+    color: #dedede;
+    border: 2px #dedede solid;
+}
+
+.login__sect {
+    color: #dedede;
+}
+
+.login__span,
+.elegant__link {
+    font-size: .8rem;
+}
+
+.elegant__link {
+    font-weight: 700;
+    text-decoration: none;
+}
+
+.elegant__link:visited {
+    color: #dedede;
+}
+
+.elegant__link:hover {
+    text-decoration: underline;
+}
