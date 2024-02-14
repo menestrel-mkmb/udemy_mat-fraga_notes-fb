@@ -49,8 +49,19 @@
 }
 
 .btn {
+    background-color: #3366ff;
+    color: #dedede;
+    border: 2px #3366ff solid;
+    border-radius: .2rem;
+
     width: calc(100% - .5rem);
     
     margin: .25rem;
     padding: .5rem;
+}
+
+.btn:hover {
+    background-color: #131313;
+    color: #dedede;
+    border: 2px #dedede solid;
 }
