@@ -10,15 +10,23 @@ export default function Notes(){
     let notesList = ['essa é uma nota de exemplo', 'essa é outra nota'];
     const [userEmail,setUserEmail] = useState('');
 
-    const clearNewNote = () => {
+    const clearNewNote = (e) => {
+        e.preventDefault();
         setNewNote('');
     }
 
-    const addNewNote = () => {
+    const addNewNote = (e) => {
+        e.preventDefault();
         alert(newNote);
     }
 
-    const deleteNote = (index) => {
+    const editNote = (e, index) => {
+        e.preventDefault();
+        setNewNote(notesList[index]);
+    }
+
+    const deleteNote = (e,index) => {
+        alert(index);
         const resultNotesList = notesList.splice(index,1);
     }
 
@@ -35,17 +43,32 @@ export default function Notes(){
     <main
         className={`${styles.main} ${styles.main__sect}`}
     >
-        <h1 className={`${styles.main__title}`}>Lista de Tarefas</h1>
-        <span>Você está logado como {userEmail}. <button onClick={e=>signOut(firebaseAuth)}>Sair</button></span>
+        <section className={`${styles.head__sect}`}>
+            <h1 className={`${styles.main__title}`}>
+                Lista de Tarefas
+            </h1>
+
+            <span className={`${styles.logged__txt}`}>
+                Você está logado como <strong>{userEmail}</strong>. </span>
+            <span className={`${styles.logged__txt}`}>
+                 Não é você?
+                <button className={`${styles.logout__btn}`}
+                    onClick={e=>signOut(firebaseAuth)}
+                >
+                    Sair
+                </button>
+            </span>
+        </section>
         <article
-            className={`${styles.notes__sect} ${styles.notes}`}
+            className={`${styles.notes__artc} ${styles.allNotes}`}
         >
-            <section
-                className={`${styles.newNote__sect} ${styles.newNote}`}
+            <form
+                className={`${styles.newNote__form} ${styles.newNote}`}
+                onSubmit={addNewNote}
             >
                 <h2>Nova anotação</h2>
                 <input
-                    className={`${styles.newnote__inp} ${styles.inp}`}
+                    className={`${styles.newNote__inp} ${styles.inp}`}
                     type="text"
                     value={newNote}
                     onChange={e=>setNewNote(e.target.value)}
@@ -53,19 +76,20 @@ export default function Notes(){
                 <section className={`${styles.btns__sect}`}>
                     <button
                         onClick={clearNewNote}
-                        className={`${styles.btn} ${styles.newNote__btn} ${styles.clear__btn}`}
+                        className={`${styles.btn} ${styles.newNote__btn} ${styles.clear__btn} ${styles.note__btn}`}
+                        type="reset"
                     >
                         Limpar
                     </button>
                     <button
-                        onClick={addNewNote}
-                        className={`${styles.btn} ${styles.newNote__btn} ${styles.addNote__btn}`}
+                        className={`${styles.btn} ${styles.newNote__btn} ${styles.addNote__btn} ${styles.note__btn}`}
+                        type="submit"
                     >
                         Adicionar anotação
                     </button>
                 </section>
-            </section>
-            <section>
+            </form>
+            <section className={`${styles.notes__sect} ${styles.notes}`}>
                 <h2>
                     Suas Anotações
                 </h2>
@@ -80,12 +104,20 @@ export default function Notes(){
                             >
                                 {note}
                             </p>
-                            <button
-                                className={`${styles.noteDelete__btn}`}
-                                onClick={e=>deleteNote(index)}
-                            >
-                                X
-                            </button>
+                            <section className={`${styles.btns__sect}`}>
+                                <button
+                                    className={`${styles.noteDelete__btn} ${styles.note__btn}`}
+                                    onClick={e=>editNote(e,index)}
+                                >
+                                    Editar
+                                </button>
+                                <button
+                                    className={`${styles.noteDelete__btn} ${styles.note__btn}`}
+                                    onClick={e=>deleteNote(e,index)}
+                                >
+                                    Concluir
+                                </button>
+                            </section>
                         </section>
                     ))}
                 </article>)}
