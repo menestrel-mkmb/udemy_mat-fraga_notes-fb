@@ -1,16 +1,33 @@
 import { useState } from "react";
 import styles from "./index.module.css";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+
+import { firebaseAuth } from "../../services/firebaseConnection";
+import { createUserWithEmailAndPassword } from "firebase/auth";
 
 export default function Register(){
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [registered, setRegistered] = useState(false);
 
+    const navigate = useNavigate();
+
     const signUp = (e) => {
         e.preventDefault();
 
-        setRegistered(email !== '' && password !== '');
+        if(email !== '' && password !== ''){
+            createUserWithEmailAndPassword(firebaseAuth, email, password)
+            .then((value) => {
+                console.log("Cadastrado com sucesso");
+                console.log(value);
+            })
+            .catch((reason) => {
+                console.log("Erro ao cadastrar");
+                console.log(reason);
+            });
+            setRegistered(true);
+            navigate("/", { replace: true });
+        }
     }
 
     return(
