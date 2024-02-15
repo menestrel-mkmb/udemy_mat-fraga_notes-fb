@@ -1,10 +1,14 @@
 import { useEffect, useState } from "react";
 import styles from "./index.module.css";
 
+import { firebaseAuth } from "../../services/firebaseConnection";
+import { signOut } from "firebase/auth";
+
 export default function Notes(){
     const [notes, setNotes] = useState('');
     const [newNote, setNewNote] = useState('');
     let notesList = ['essa é uma nota de exemplo', 'essa é outra nota'];
+    const [userEmail,setUserEmail] = useState('');
 
     const clearNewNote = () => {
         setNewNote('');
@@ -18,6 +22,12 @@ export default function Notes(){
         const resultNotesList = notesList.splice(index,1);
     }
 
+    useEffect(()=> {
+        const user = localStorage.getItem("@detailUser");
+        const parsedUser = JSON.parse(user);
+        setUserEmail(parsedUser.email);
+    }, []);
+
     useEffect(() => {
     }, [notes]);
 
@@ -26,6 +36,7 @@ export default function Notes(){
         className={`${styles.main} ${styles.main__sect}`}
     >
         <h1 className={`${styles.main__title}`}>Lista de Tarefas</h1>
+        <span>Você está logado como {userEmail}. <button onClick={e=>signOut(firebaseAuth)}>Sair</button></span>
         <article
             className={`${styles.notes__sect} ${styles.notes}`}
         >
