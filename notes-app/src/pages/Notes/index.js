@@ -76,13 +76,15 @@ export default function Notes(){
                 <section className={`${styles.btns__sect}`}>
                     <button
                         onClick={clearNewNote}
-                        className={`${styles.btn} ${styles.newNote__btn} ${styles.clear__btn} ${styles.note__btn}`}
+                        className={`${styles.btn} ${styles.newNote__btn} ${styles.clear__btn}
+                        ${styles.note__btn}`}
                         type="reset"
                     >
                         Limpar
                     </button>
                     <button
-                        className={`${styles.btn} ${styles.newNote__btn} ${styles.addNote__btn} ${styles.note__btn}`}
+                        className={`${styles.btn} ${styles.newNote__btn} ${styles.addNote__btn}
+                        ${styles.note__btn} ${styles.feature__btn}`}
                         type="submit"
                     >
                         Adicionar anotação
@@ -90,11 +92,11 @@ export default function Notes(){
                 </section>
             </form>
             <section className={`${styles.notes__sect} ${styles.notes}`}>
-                <h2>
+                <h2 className={`${styles.notes__title}`}>
                     Suas Anotações
                 </h2>
                 {notesList.length > 0 &&
-                (<article>
+                (<article className={`${styles.notesList__artc} ${styles.notesList}`}>
                     {notesList.map( (note,index) => (
                         <section key={index}
                             className={`${styles.note} ${styles.note}${index}`}
@@ -106,13 +108,15 @@ export default function Notes(){
                             </p>
                             <section className={`${styles.btns__sect}`}>
                                 <button
-                                    className={`${styles.noteDelete__btn} ${styles.note__btn}`}
+                                    className={`${styles.noteDelete__btn} ${styles.note__btn}
+                                    ${styles.btn}`}
                                     onClick={e=>editNote(e,index)}
                                 >
                                     Editar
                                 </button>
                                 <button
-                                    className={`${styles.noteDelete__btn} ${styles.note__btn}`}
+                                    className={`${styles.noteDelete__btn} ${styles.note__btn}
+                                    ${styles.btn} ${styles.feature__btn}`}
                                     onClick={e=>deleteNote(e,index)}
                                 >
                                     Concluir
