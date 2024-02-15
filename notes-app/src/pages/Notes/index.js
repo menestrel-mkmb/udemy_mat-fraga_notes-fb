@@ -1,23 +1,38 @@
 import { useEffect, useState } from "react";
 import styles from "./index.module.css";
 
-import { firebaseAuth } from "../../services/firebaseConnection";
+import { firebaseAuth, firebaseDb } from "../../services/firebaseConnection";
 import { signOut } from "firebase/auth";
+import { addDoc, collection, deleteDoc, getDocs, updateDoc } from "firebase/firestore";
 
 export default function Notes(){
     const [notes, setNotes] = useState('');
     const [newNote, setNewNote] = useState('');
     let notesList = ['essa é uma nota de exemplo', 'essa é outra nota'];
     const [userEmail,setUserEmail] = useState('');
+    const [userUid,setUserUid] = useState('');
 
     const clearNewNote = (e) => {
         e.preventDefault();
         setNewNote('');
     }
 
-    const addNewNote = (e) => {
+    const addNewNote = async (e) => {
         e.preventDefault();
-        alert(newNote);
+        if(newNote === '') return;
+
+        await addDoc(collection(firebaseDb, "tarefas"), {
+            tarefa: newNote,
+            created: new Date(),
+            userUid: userUid
+        })
+        .then((value)=>{
+            console.log(value);
+            setNewNote('');
+        })
+        .catch((reason)=>{
+            console.log(reason);
+        })
     }
 
     const editNote = (e, index) => {
@@ -34,6 +49,7 @@ export default function Notes(){
         const user = localStorage.getItem("@detailUser");
         const parsedUser = JSON.parse(user);
         setUserEmail(parsedUser.email);
+        setUserUid(parsedUser.uid);
     }, []);
 
     useEffect(() => {
