@@ -61,7 +61,10 @@ export default function Home(){
         </section>
         </article>)}
         { login && (<article>
-            <h3>You entered as {email}</h3>
+            <p>Você logou como {email}.
+            Se você não for redirecionado logo, pode 
+            <Link to="/notes">clicar aqui</Link>
+            para ir para suas anotações</p>
         </article>)}
     </main>
     )
