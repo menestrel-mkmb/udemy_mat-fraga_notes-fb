@@ -1,17 +1,31 @@
 import { useState } from "react";
 import styles from "./index.module.css";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+
+import { firebaseAuth } from "../../services/firebaseConnection";
+import { signInWithEmailAndPassword, onAuthStateChanged } from "firebase/auth";
 
 export default function Home(){
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [login, setLogin] = useState(false);
 
-    const handleLogin = (e) => {
+    const navigate = useNavigate();
+
+    const handleLogin = async (e) => {
         e.preventDefault();
 
-        //faking have cred
-        setLogin(email !== '' && password !== '')
+        if(email !== '' && password !== ''){
+            await signInWithEmailAndPassword(firebaseAuth, email, password)
+            .then((value) => {
+                console.log(value);
+                setLogin(true);
+                navigate('/notes', { replace: true });
+            })
+            .catch((reason) => {
+                console.log(reason);
+            });
+        }
     }
 
     return(
