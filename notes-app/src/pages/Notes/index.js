@@ -3,12 +3,11 @@ import styles from "./index.module.css";
 
 import { firebaseAuth, firebaseDb } from "../../services/firebaseConnection";
 import { signOut } from "firebase/auth";
-import { addDoc, collection, deleteDoc, getDocs, updateDoc } from "firebase/firestore";
+import { addDoc, collection, onSnapshot, orderBy, query } from "firebase/firestore";
 
 export default function Notes(){
-    const [notes, setNotes] = useState('');
+    const [notesList, setNotesList] = useState([]);
     const [newNote, setNewNote] = useState('');
-    let notesList = ['essa é uma nota de exemplo', 'essa é outra nota'];
     const [userEmail,setUserEmail] = useState('');
     const [userUid,setUserUid] = useState('');
 
@@ -50,10 +49,20 @@ export default function Notes(){
         const parsedUser = JSON.parse(user);
         setUserEmail(parsedUser.email);
         setUserUid(parsedUser.uid);
-    }, []);
 
-    useEffect(() => {
-    }, [notes]);
+        if(userUid !== ''){
+            const tarefaRef = collection(firebaseDb,`tarefas-${userUid}`);
+            const q = query(tarefaRef,
+                        orderBy("created", "desc"));
+            const unsub = onSnapshot(q, (snapshot) => {
+                let list = [];
+                snapshot.forEach((doc) => {
+                    list.push(doc.data().tarefa);
+                });
+                setNotesList(list);
+            });
+        }
+    }, [notesList, userUid]);
 
     return(
     <main
