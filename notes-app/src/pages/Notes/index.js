@@ -22,13 +22,14 @@ export default function Notes(){
         e.preventDefault();
         if(newNote === '') return;
 
-        await addDoc(collection(firebaseDb, `tarefas-${userUid}`), {
+        const collectionTarefas = collection(firebaseDb, `tarefas-${userUid}`);
+
+        await addDoc(collectionTarefas, {
             tarefa: newNote,
             created: new Date(),
             userUid: userUid
         })
         .then((value)=>{
-            console.log(value);
             setNewNote('');
         })
         .catch((reason)=>{
@@ -64,11 +65,13 @@ export default function Notes(){
                 });
                 setNotesList(list);
                 setIdList(listId);
+
+                console.log(idList);
             });
 
             if(loading) setLoading(false);
         }
-    }, [notesList, userUid]);
+    }, [idList, loading, notesList, userUid]);
 
     if(loading) return(
     <main
@@ -99,7 +102,7 @@ export default function Notes(){
             >
                 <h2>Nova anotação</h2>
                 <input
-                    className={`${styles.newNote__inp} ${styles.inp}`}
+                    className={`${styles.newNote__inp} ${styles.inp} ${styles.fullwtopborder}`}
                     type="text"
                     value={newNote}
                     onChange={e=>setNewNote(e.target.value)}
