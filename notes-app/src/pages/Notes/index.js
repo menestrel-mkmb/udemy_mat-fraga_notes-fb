@@ -21,7 +21,7 @@ export default function Notes(){
         e.preventDefault();
         if(newNote === '') return;
 
-        await addDoc(collection(firebaseDb, "tarefas"), {
+        await addDoc(collection(firebaseDb, `tarefas-${userUid}`), {
             tarefa: newNote,
             created: new Date(),
             userUid: userUid
