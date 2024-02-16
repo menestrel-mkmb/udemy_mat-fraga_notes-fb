@@ -7,9 +7,11 @@ import { addDoc, collection, onSnapshot, orderBy, query } from "firebase/firesto
 
 export default function Notes(){
     const [notesList, setNotesList] = useState([]);
+    const [idList, setIdList] = useState([]);
     const [newNote, setNewNote] = useState('');
     const [userEmail,setUserEmail] = useState('');
     const [userUid,setUserUid] = useState('');
+    const [loading, setLoading] = useState(true);
 
     const clearNewNote = (e) => {
         e.preventDefault();
@@ -41,7 +43,6 @@ export default function Notes(){
 
     const deleteNote = (e,index) => {
         alert(index);
-        const resultNotesList = notesList.splice(index,1);
     }
 
     useEffect(()=> {
@@ -54,15 +55,82 @@ export default function Notes(){
             const tarefaRef = collection(firebaseDb,`tarefas-${userUid}`);
             const q = query(tarefaRef,
                         orderBy("created", "desc"));
-            const unsub = onSnapshot(q, (snapshot) => {
+            onSnapshot(q, (snapshot) => {
+                let listId = [];
                 let list = [];
                 snapshot.forEach((doc) => {
                     list.push(doc.data().tarefa);
+                    listId.push(doc.id);
                 });
                 setNotesList(list);
+                setIdList(listId);
             });
+
+            if(loading) setLoading(false);
         }
     }, [notesList, userUid]);
+
+    if(loading) return(
+    <main
+        className={`${styles.main} ${styles.main__sect}`}
+    >
+        <section className={`${styles.head__sect}`}>
+            <h1 className={`${styles.main__title}`}>
+                Lista de Tarefas
+            </h1>
+
+            <span className={`${styles.logged__txt}`}>
+                Você está logado como <strong>{userEmail}</strong>. </span>
+            <span className={`${styles.logged__txt}`}>
+                 Não é você?
+                <button className={`${styles.logout__btn}`}
+                    onClick={e=>signOut(firebaseAuth)}
+                >
+                    Sair
+                </button>
+            </span>
+        </section>
+        <article
+            className={`${styles.notes__artc} ${styles.allNotes}`}
+        >
+            <form
+                className={`${styles.newNote__form} ${styles.newNote}`}
+                onSubmit={addNewNote}
+            >
+                <h2>Nova anotação</h2>
+                <input
+                    className={`${styles.newNote__inp} ${styles.inp}`}
+                    type="text"
+                    value={newNote}
+                    onChange={e=>setNewNote(e.target.value)}
+                />
+                <section className={`${styles.btns__sect}`}>
+                    <button
+                        onClick={clearNewNote}
+                        className={`${styles.btn} ${styles.newNote__btn} ${styles.clear__btn}
+                        ${styles.note__btn}`}
+                        type="reset"
+                    >
+                        Limpar
+                    </button>
+                    <button
+                        className={`${styles.btn} ${styles.newNote__btn} ${styles.addNote__btn}
+                        ${styles.note__btn} ${styles.feature__btn}`}
+                        type="submit"
+                    >
+                        Adicionar anotação
+                    </button>
+                </section>
+            </form>
+            <section className={`${styles.notes__sect} ${styles.notes}`}>
+                <h2 className={`${styles.notes__title}`}>
+                    Suas Anotações
+                </h2>
+                <h3>Carregando...</h3>
+            </section>
+        </article>
+    </main>
+    )
 
     return(
     <main
