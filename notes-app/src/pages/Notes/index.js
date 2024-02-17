@@ -49,8 +49,18 @@ export default function Notes(){
     }
 
     const sendEditedNote = async () => {
-
         const docToEdit = doc(firebaseDb, `tarefas-${userUid}`, editId);
+
+        await updateDoc(docToEdit, {
+            tarefa: newNote
+        })
+        .then( () => {
+            setNewNote('');
+            setToEdit(false);
+        })
+        .catch( (reason) => {
+            console.log(reason);
+        });
         
     }
 
@@ -60,9 +70,6 @@ export default function Notes(){
         const docToDelete = doc(firebaseDb, `tarefas-${userUid}`, docUid);
 
         await deleteDoc(docToDelete)
-        .then( (value) => {
-            console.log(value);
-        })
         .catch( (reason) => {
             console.log(reason);
         });
@@ -180,7 +187,7 @@ export default function Notes(){
         >
             <form
                 className={`${styles.newNote__form} ${styles.newNote}`}
-                onSubmit={addNewNote}
+                //onSubmit={addNewNote}
             >
                 <h2>Nova anotação</h2>
                 <input
@@ -191,27 +198,21 @@ export default function Notes(){
                 />
                 <section className={`${styles.btns__sect}`}>
                     <button
-                        onClick={clearNewNote}
                         className={`${styles.btn} ${styles.newNote__btn} ${styles.clear__btn}
                         ${styles.note__btn}`}
+                        onClick={clearNewNote}
                         type="reset"
                     >
-                        Limpar
+                        {toEdit ? "Cancelar editar" : "Limpar"}
                     </button>
-                    {!toEdit && (<button
+                    <button
                         className={`${styles.btn} ${styles.newNote__btn} ${styles.addNote__btn}
                         ${styles.note__btn} ${styles.feature__btn}`}
-                        type="submit"
+                        type={toEdit ? "button" : "submit"}
+                        onClick={toEdit ? sendEditedNote : addNewNote}
                     >
-                        Adicionar anotação
-                    </button>)}
-                    {toEdit && (<button
-                        className={`${styles.btn} ${styles.newNote__btn} ${styles.addNote__btn}
-                        ${styles.note__btn} ${styles.feature__btn}`}
-                        onClick={sendEditedNote}
-                    >
-                        Editar anotação
-                    </button>)}
+                        {toEdit ? "Editar" : "Adicionar"} anotação
+                    </button>
                 </section>
             </form>
             <section className={`${styles.notes__sect} ${styles.notes}`}>
@@ -230,6 +231,7 @@ export default function Notes(){
                                 {note}
                             </p>
                             <section className={`${styles.btns__sect}`}>
+                                {!toEdit && (
                                 <button
                                     className={`${styles.noteDelete__btn} ${styles.note__btn}
                                     ${styles.btn}`}
@@ -237,6 +239,7 @@ export default function Notes(){
                                 >
                                     Editar
                                 </button>
+                                )}
                                 <button
                                     className={`${styles.noteDelete__btn} ${styles.note__btn}
                                     ${styles.btn} ${styles.feature__btn}`}
