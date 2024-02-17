@@ -3,7 +3,7 @@ import styles from "./index.module.css";
 
 import { firebaseAuth, firebaseDb } from "../../services/firebaseConnection";
 import { signOut } from "firebase/auth";
-import { addDoc, collection, onSnapshot, orderBy, query } from "firebase/firestore";
+import { addDoc, collection, doc, onSnapshot, orderBy, query, deleteDoc, updateDoc } from "firebase/firestore";
 
 export default function Notes(){
     const [notesList, setNotesList] = useState([]);
@@ -12,10 +12,13 @@ export default function Notes(){
     const [userEmail,setUserEmail] = useState('');
     const [userUid,setUserUid] = useState('');
     const [loading, setLoading] = useState(true);
+    const [toEdit, setToEdit] = useState(false);
+    const [editId, setEditId] = useState('');
 
     const clearNewNote = (e) => {
         e.preventDefault();
         setNewNote('');
+        setToEdit(false);
     }
 
     const addNewNote = async (e) => {
@@ -29,7 +32,7 @@ export default function Notes(){
             created: new Date(),
             userUid: userUid
         })
-        .then((value)=>{
+        .then(() => {
             setNewNote('');
         })
         .catch((reason)=>{
@@ -39,11 +42,30 @@ export default function Notes(){
 
     const editNote = (e, index) => {
         e.preventDefault();
+
         setNewNote(notesList[index]);
+        setEditId(idList[index]);
+        setToEdit(true);
     }
 
-    const deleteNote = (e,index) => {
-        alert(index);
+    const sendEditedNote = async () => {
+
+        const docToEdit = doc(firebaseDb, `tarefas-${userUid}`, editId);
+        
+    }
+
+    const deleteNote = async (e,index) => {
+        e.preventDefault();
+        const docUid = idList[index];
+        const docToDelete = doc(firebaseDb, `tarefas-${userUid}`, docUid);
+
+        await deleteDoc(docToDelete)
+        .then( (value) => {
+            console.log(value);
+        })
+        .catch( (reason) => {
+            console.log(reason);
+        });
     }
 
     useEffect(()=> {
@@ -65,8 +87,6 @@ export default function Notes(){
                 });
                 setNotesList(list);
                 setIdList(listId);
-
-                console.log(idList);
             });
 
             if(loading) setLoading(false);
@@ -178,13 +198,20 @@ export default function Notes(){
                     >
                         Limpar
                     </button>
-                    <button
+                    {!toEdit && (<button
                         className={`${styles.btn} ${styles.newNote__btn} ${styles.addNote__btn}
                         ${styles.note__btn} ${styles.feature__btn}`}
                         type="submit"
                     >
                         Adicionar anotação
-                    </button>
+                    </button>)}
+                    {toEdit && (<button
+                        className={`${styles.btn} ${styles.newNote__btn} ${styles.addNote__btn}
+                        ${styles.note__btn} ${styles.feature__btn}`}
+                        onClick={sendEditedNote}
+                    >
+                        Editar anotação
+                    </button>)}
                 </section>
             </form>
             <section className={`${styles.notes__sect} ${styles.notes}`}>
@@ -193,7 +220,7 @@ export default function Notes(){
                 </h2>
                 {notesList.length > 0 &&
                 (<article className={`${styles.notesList__artc} ${styles.notesList}`}>
-                    {notesList.map( (note,index) => (
+                    {notesList.map( (note, index) => (
                         <section key={index}
                             className={`${styles.note} ${styles.note}${index}`}
                         >
@@ -206,14 +233,14 @@ export default function Notes(){
                                 <button
                                     className={`${styles.noteDelete__btn} ${styles.note__btn}
                                     ${styles.btn}`}
-                                    onClick={e=>editNote(e,index)}
+                                    onClick={e=>editNote(e, index)}
                                 >
                                     Editar
                                 </button>
                                 <button
                                     className={`${styles.noteDelete__btn} ${styles.note__btn}
                                     ${styles.btn} ${styles.feature__btn}`}
-                                    onClick={e=>deleteNote(e,index)}
+                                    onClick={e=>deleteNote(e, index)}
                                 >
                                     Concluir
                                 </button>
