@@ -3,7 +3,7 @@ import styles from "./index.module.css";
 import { Link, useNavigate } from "react-router-dom";
 
 import { firebaseAuth } from "../../services/firebaseConnection";
-import { signInWithEmailAndPassword, onAuthStateChanged } from "firebase/auth";
+import { signInWithEmailAndPassword } from "firebase/auth";
 
 export default function Home(){
     const [email, setEmail] = useState('');

@@ -10,7 +10,7 @@ export default function PrivateRouter({ children }){
 
     useEffect(()=> {
         async function checklogin(){
-            const unsub = onAuthStateChanged(firebaseAuth, (user) => {
+            onAuthStateChanged(firebaseAuth, (user) => {
                 if(user){
                     const userData = {
                         uid: user.uid,
