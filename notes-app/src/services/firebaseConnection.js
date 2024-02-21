@@ -2,9 +2,8 @@ import { initializeApp } from 'firebase/app';
 import { getFirestore } from 'firebase/firestore';
 import { getAuth } from 'firebase/auth';
 
-// TODO: Firebase cant use process.env to safe store API KEY
 const firebaseConfig = {
-    apiKey: "CHANGE_TO_API_KEY_HERE",
+    apiKey: process.env.REACT_APP_API_KEY,
     authDomain: "note-app-26c43.firebaseapp.com",
     projectId: "note-app-26c43",
     storageBucket: "note-app-26c43.appspot.com",
